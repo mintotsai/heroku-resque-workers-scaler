@@ -31,8 +31,9 @@ module HerokuResqueAutoScale
       end
 
       def shut_down_workers!
+        minimum = ENV['RESQUE_WORKER_MINIMUM'].to_i || 0
         return unless authorized?
-        @@heroku.formation.update(app_name, worker_name, { quantity: 0 })
+        @@heroku.formation.update(app_name, worker_name, { quantity: minimum })
         nil
       end
 
